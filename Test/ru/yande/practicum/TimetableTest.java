@@ -108,5 +108,22 @@ public class TimetableTest {
 
     }
 
+
+    @Test
+    void tryToAddNewTrainingToListOfTrainings(){
+        TimeTable timetable = new TimeTable();
+
+        Group group = new Group("Акробатика для детей", Age.CHILD, 60);
+        Coach coach = new Coach("Васильев", "Николай", "Сергеевич");
+        TrainingSession singleTrainingSession = new TrainingSession(group, coach,
+                DayOfWeek.MONDAY, new TimeOfDay(13, 0));
+
+        timetable.addNewTrainingSession(singleTrainingSession);
+
+        List<TrainingSession> listOfTrainings = timetable.getTrainingSessionsForDay(DayOfWeek.MONDAY);
+
+        assertEquals(1, listOfTrainings.size());
+    }
+
 }
 

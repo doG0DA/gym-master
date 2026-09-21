@@ -4,25 +4,16 @@ import java.util.*;
 
 public class TimeTable {
 
-    private Map<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> timetable = new HashMap<>();
+    private final Map<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> timetable = new HashMap<>();
 
     public void addNewTrainingSession(TrainingSession trainingSession) {
         DayOfWeek day = trainingSession.getDayOfWeek();
         TimeOfDay time = trainingSession.getTimeOfDay();
 
-        TreeMap<TimeOfDay, List<TrainingSession>> dayOfSession = timetable.get(day);
-        if (dayOfSession == null) {
-            dayOfSession = new TreeMap<>();
-            timetable.put(day, dayOfSession);
-        }
+        timetable.computeIfAbsent(day, k -> new TreeMap<>())
+                        .computeIfAbsent(time, k -> new ArrayList<>())
+                                . add(trainingSession);
 
-        List<TrainingSession> listOfSession = dayOfSession.get(time);
-        if (listOfSession == null) {
-            listOfSession = new ArrayList<>();
-            dayOfSession.put(time, listOfSession);
-        }
-
-        listOfSession.add(trainingSession);
     }
 
     public List<TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
